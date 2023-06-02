@@ -1,59 +1,41 @@
-const { createStore } = require("redux");
+import { createStore } from "redux";
 
-const add = document.getElementById("add");
-const minus = document.getElementById("minus");
-const number = document.querySelector("span");
+/**
+ * MutateState 쓰지마라
+ * */
 
-// let count = 0;
-// number.innerText = count;
+const form = document.querySelector("form");
+const input = document.querySelector("input");
+const ul = document.querySelector("ul");
 
-// const updateText = () => {
-//     number.innerText = count;
-// };
+const ADD_TODO = "ADD_TODO";
+const REMOVE_TODO = "REMOVE_TODO";
 
-// const handleAdd = () => {
-//     count = count + 1;
-//     updateText();
-// };
-// const handleMinus = () => {
-//     count = count - 1;
-//     updateText();
-// };
-
-// add.addEventListener("click", handleAdd);
-// minus.addEventListener("click", handleMinus);
-
-number.innerText = 0;
-
-const ADD = "ADD";
-const MINUS = "MINUS";
-
-const countReducer = (count = 0, action) => {
-    console.log(count, action);
+const toDoReducer = (state = [], action) => {
+    console.log(state, action);
     switch (action.type) {
-        case ADD:
-            return count + 1;
-        case MINUS:
-            return count - 1;
+        case ADD_TODO:
+            return [];
+        case REMOVE_TODO:
+            return [];
         default:
-            break;
+            return state;
     }
-    return count;
-};
-const countStore = createStore(countReducer);
-
-const onChange = () => {
-    number.innerText = countStore.getState();
-};
-countStore.subscribe(onChange);
-// subscribe = state의 변화를 알수있게 해준다
-
-const handleAdd = () => {
-    countStore.dispatch({ type: ADD });
-};
-const handleMinus = () => {
-    countStore.dispatch({ type: MINUS });
 };
 
-add.addEventListener("click", handleAdd);
-minus.addEventListener("click", handleMinus);
+const toDoStore = createStore(toDoReducer);
+
+// const createTodo = (toDo) => {
+//     const li = document.createElement("li");
+//     li.innerText = toDo;
+//     ul.appendChild(li);
+// };
+
+const onSubmit = (e) => {
+    e.preventDefault();
+    const toDo = input.value;
+    toDoStore.dispatch({ type: ADD_TODO, text: toDo });
+    input.value = "";
+};
+
+form.addEventListener("submit", onSubmit);

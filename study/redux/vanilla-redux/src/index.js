@@ -15,9 +15,9 @@ const toDoReducer = (state = [], action) => {
     console.log(state, action);
     switch (action.type) {
         case ADD_TODO:
-            return [{ text: action.text, date: Date.now() }, ...state];
+            return [{ text: action.text, id: Date.now() }, ...state];
         case REMOVE_TODO:
-            return [];
+            return state.filter((item) => item.id !== action.id);
         default:
             return state;
     }
@@ -36,13 +36,22 @@ const createTodo = () => {
     ul.innerHTML = "";
     toDos.forEach((element) => {
         const li = document.createElement("li");
-        li.date = element.date;
+        const btn = document.createElement("button");
+        btn.innerHTML = "DEL";
+        btn.addEventListener("click", deleteTodo);
+        li.id = element.id;
         li.innerText = element.text;
         ul.appendChild(li);
+        li.appendChild(btn);
     });
 };
 
 toDoStore.subscribe(createTodo);
+
+const deleteTodo = (e) => {
+    const id = parseInt(e.target.parentNode.id);
+    return toDoStore.dispatch({ type: REMOVE_TODO, id });
+};
 
 // const onSubmit = (e) => {
 //     e.preventDefault();

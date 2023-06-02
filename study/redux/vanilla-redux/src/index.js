@@ -1,7 +1,7 @@
 import { createStore } from "redux";
 
 /**
- * MutateState 쓰지마라
+ * mutate state 쓰지마라(redux방식 아님)
  * */
 
 const form = document.querySelector("form");
@@ -15,7 +15,7 @@ const toDoReducer = (state = [], action) => {
     console.log(state, action);
     switch (action.type) {
         case ADD_TODO:
-            return [];
+            return [{ text: action.text, date: Date.now() }, ...state];
         case REMOVE_TODO:
             return [];
         default:
@@ -29,6 +29,26 @@ const toDoStore = createStore(toDoReducer);
 //     const li = document.createElement("li");
 //     li.innerText = toDo;
 //     ul.appendChild(li);
+// };
+
+const createTodo = () => {
+    const toDos = toDoStore.getState();
+    ul.innerHTML = "";
+    toDos.forEach((element) => {
+        const li = document.createElement("li");
+        li.date = element.date;
+        li.innerText = element.text;
+        ul.appendChild(li);
+    });
+};
+
+toDoStore.subscribe(createTodo);
+
+// const onSubmit = (e) => {
+//     e.preventDefault();
+//     const toDo = input.value;
+//     createTodo(toDo);
+//     input.value = "";
 // };
 
 const onSubmit = (e) => {

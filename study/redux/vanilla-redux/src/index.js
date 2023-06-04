@@ -1,9 +1,5 @@
 import { createStore } from "redux";
 
-/**
- * mutate state 쓰지마라(redux방식 아님)
- * */
-
 const form = document.querySelector("form");
 const input = document.querySelector("input");
 const ul = document.querySelector("ul");
@@ -33,12 +29,6 @@ const toDoReducer = (state = [], action) => {
 };
 
 const toDoStore = createStore(toDoReducer);
-
-// const createTodo = (toDo) => {
-//     const li = document.createElement("li");
-//     li.innerText = toDo;
-//     ul.appendChild(li);
-// };
 
 const createTodo = () => {
     const toDos = toDoStore.getState();
@@ -106,22 +96,11 @@ const updateTodo = (e) => {
     const editBox = e.target.parentNode;
     const updateInput = editBox.firstChild;
 
-    // const originInput = editBox.parentNode.firstChild;
-    // originInput.textContent = updateInput.value;
-    // editBox.style.display = "none";
-
     const id = parseInt(editBox.parentNode.id);
     const text = updateInput.value;
 
     return toDoStore.dispatch({ type: UPDATE_TODO, id, text });
 };
-
-// const onSubmit = (e) => {
-//     e.preventDefault();
-//     const toDo = input.value;
-//     createTodo(toDo);
-//     input.value = "";
-// };
 
 const onSubmit = (e) => {
     e.preventDefault();

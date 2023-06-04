@@ -18,12 +18,14 @@ const toDoReducer = (state = [], action) => {
             return [{ text: action.text, id: Date.now() }, ...state];
         case REMOVE_TODO:
             return state.filter((item) => item.id !== action.id);
-        // case UPDATE_TODO:
-        //     return state.map((item) => {
-        //         if (item.id === action.id) {
-        //             return [{ text: action.txt }, ...state];
-        //         }
-        //     });
+        case UPDATE_TODO:
+            state
+                .filter((item) => item.id === action.id)
+                .map((item) => {
+                    item.text = action.text;
+                    return item;
+                });
+            return state;
         default:
             return state;
     }
@@ -102,12 +104,15 @@ const cancel = (e) => {
 const updateTodo = (e) => {
     const editBox = e.target.parentNode;
     const updateInput = editBox.firstChild;
+
+    // const originInput = editBox.parentNode.firstChild;
+    // originInput.textContent = updateInput.value;
+    // editBox.style.display = "none";
+
     const id = parseInt(editBox.parentNode.id);
+    const text = updateInput.value;
 
-    const originInput = editBox.parentNode.firstChild;
-    originInput.textContent = updateInput.value;
-
-    editBox.style.display = "none";
+    return toDoStore.dispatch({ type: UPDATE_TODO, id, text });
 };
 
 // const onSubmit = (e) => {

@@ -19,13 +19,14 @@ const toDoReducer = (state = [], action) => {
         case REMOVE_TODO:
             return state.filter((item) => item.id !== action.id);
         case UPDATE_TODO:
-            state
+            const newState = Object.assign(state);
+            newState
                 .filter((item) => item.id === action.id)
                 .map((item) => {
                     item.text = action.text;
                     return item;
                 });
-            return state;
+            return newState;
         default:
             return state;
     }

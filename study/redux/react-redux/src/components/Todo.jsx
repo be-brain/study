@@ -1,16 +1,19 @@
 import React from "react";
+import { useDispatch } from "react-redux";
+import { deleteToDo } from "../store";
 
-const Todo = ({ toDo }) => {
+const Todo = ({ text, id }) => {
+    const dispatch = useDispatch();
+    const deleteHandler = () => {
+        dispatch(deleteToDo(id));
+    };
+
     return (
-        <ul>
-            {toDo.map((item) => (
-                <li key={item.id}>
-                    {item.text}
-                    <button>DEL</button>
-                    <button>EDT</button>
-                </li>
-            ))}
-        </ul>
+        <li>
+            {text}
+            <button onClick={deleteHandler}>DEL</button>
+            <button>EDT</button>
+        </li>
     );
 };
 

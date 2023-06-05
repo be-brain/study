@@ -28,7 +28,11 @@ const Home = () => {
                 <input type="text" onChange={onChange} value={text} />
                 <button>Add</button>
             </form>
-            <Todo toDo={toDo} />
+            <ul>
+                {toDo.map((toDo) => {
+                    return <Todo {...toDo} key={toDo.id} />;
+                })}
+            </ul>
         </div>
     );
 };

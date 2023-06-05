@@ -1,7 +1,11 @@
 import React from "react";
+import { useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
 
 const Detail = () => {
-    return <div>Detail</div>;
+    const id = parseInt(useParams().id);
+    const toDo = useSelector((state) => state);
+    return <div>{toDo.find((item) => item.id === id)?.text}</div>;
 };
 
 export default Detail;

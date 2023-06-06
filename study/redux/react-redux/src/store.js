@@ -1,47 +1,46 @@
-import { createStore } from "redux";
+import { configureStore, createSlice } from "@reduxjs/toolkit";
 
-const ADD = "ADD";
-const DELETE = "DELETE";
-const UPDATE = "UPDATE";
+/* 
+toolkit은
+1. new state를 반환하거나
+2. state를 mutate할수있다
+*/
+// const reducer = createReducer(0, {
+//     [addToDo]: (state, action) => {
+//         state.push({ text: action.payload, id: Date.now() });
+//     },
+//     [deleteToDo]: (state, action) => {
+//         state.filter((item) => item.id !== action.payload);
+//     },
+//     [updateToDo]: (state, action) => {
+//         state
+//             .filter((item) => item.id === action.payload.id)
+//             .map((item) => (item.text = action.payload.inputValue));
+//     },
+// });
+// export const actionCreators = { addToDo, deleteToDo, updateToDo };
 
-export const addToDo = (text) => {
-    return {
-        type: ADD,
-        text,
-    };
-};
-
-export const deleteToDo = (id) => {
-    return {
-        type: DELETE,
-        id,
-    };
-};
-
-export const updateTodo = (text, id) => {
-    return {
-        type: UPDATE,
-        text,
-        id,
-    };
-};
-
-const reducer = (state = [], action) => {
-    switch (action.type) {
-        case ADD:
-            return [{ text: action.text, id: Date.now() }, ...state];
-        case DELETE:
-            return state.filter((item) => item.id !== action.id);
-        case UPDATE:
+/* 
+    createSlice : reducer + action
+*/
+const toDos = createSlice({
+    name: "toDoReducer",
+    initialState: [],
+    reducers: {
+        add: (state, action) => {
+            state.unshift({ text: action.payload, id: Date.now() });
+        },
+        remove: (state, action) => {
+            return state.filter((item) => item.id !== action.payload);
+        },
+        update: (state, action) => {
             state
-                .filter((item) => item.id === action.id)
-                .map((item) => (item.text = action.text));
-            return state;
-        default:
-            return state;
-    }
-};
+                .filter((item) => item.id === action.payload.id)
+                .map((item) => (item.text = action.payload.inputValue));
+        },
+    },
+});
+export const { add, remove, update } = toDos.actions;
 
-const store = createStore(reducer);
-
+const store = configureStore({ reducer: toDos.reducer });
 export default store;

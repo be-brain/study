@@ -1,15 +1,15 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { deleteToDo, updateTodo } from "../store";
 import { Link } from "react-router-dom";
+import { remove, update } from "../store";
 
 const Todo = ({ text, id }) => {
     const [isActive, setIsActive] = useState(false);
     const [inputValue, setInputValue] = useState(text);
-
     const dispatch = useDispatch();
+
     const deleteHandler = () => {
-        dispatch(deleteToDo(id));
+        dispatch(remove(id));
     };
     const editHandler = () => {
         setIsActive(!isActive);
@@ -19,27 +19,29 @@ const Todo = ({ text, id }) => {
         setInputValue(inputText);
     };
 
-    const updateBtn = () => {
-        dispatch(updateTodo(inputValue, id));
+    const updateBtn = (e) => {
+        e.preventDefault();
+        dispatch(update({ inputValue, id }));
         setIsActive(false);
     };
 
-    const cancelBtn = () => {
+    const cancelBtn = (e) => {
+        e.preventDefault();
         setIsActive(false);
     };
 
     return (
         <li>
             <div style={isActive ? { display: "none" } : { display: "block" }}>
-                <Link to={`/${id}`}>{inputValue}</Link>
+                <Link to={`/${id}`}>{text}</Link>
                 <button onClick={deleteHandler}>DEL</button>
                 <button onClick={editHandler}>EDT</button>
             </div>
-            <div style={isActive ? { display: "block" } : { display: "none" }}>
-                <input defaultValue={inputValue} onChange={onChange} />
+            <form style={isActive ? { display: "block" } : { display: "none" }}>
+                <input defaultValue={text} onChange={onChange} />
                 <button onClick={updateBtn}>OK</button>
                 <button onClick={cancelBtn}>Cancel</button>
-            </div>
+            </form>
         </li>
     );
 };

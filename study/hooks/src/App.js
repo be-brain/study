@@ -1,51 +1,105 @@
 import { useReducer, useState } from "react";
 
 const ACTION_TYPES = {
-    deposit: "deposit",
-    withdraw: "withdraw",
+    add: "add",
+    remove: "remove",
+    cancel: "cancel",
 };
+
+const initialState = { count: 0, userInfo: [] };
 
 const reducer = (state, action) => {
     switch (action.type) {
-        case ACTION_TYPES.deposit:
-            return state + action.payload;
-        case ACTION_TYPES.withdraw:
-            return state - action.payload;
+        case ACTION_TYPES.add:
+            const newState = {
+                id: Date.now(),
+                name: action.payload.name,
+                isCancel: false,
+            };
+            return {
+                count: state.count++,
+                userInfo: [newState, ...state.userInfo],
+            };
+        case ACTION_TYPES.remove:
+            return {
+                count: state.count--,
+                userInfo: state.userInfo.filter(
+                    (item) => item.id !== action.payload.id
+                ),
+            };
+        case ACTION_TYPES.cancel:
+            return {
+                count: state.count,
+                userInfo: state.userInfo.map((item) => {
+                    if (item.id === action.payload.id)
+                        return { ...item, isCancel: !item.isCancel };
+                    return item;
+                }),
+            };
         default:
             return state;
     }
 };
 
 function App() {
-    const [number, setNumber] = useState(0);
-    const initialState = 0;
-    const [money, dispatch] = useReducer(reducer, initialState);
+    const [name, setName] = useState("");
+    const [info, dispatch] = useReducer(reducer, initialState);
 
     const onChange = (e) => {
-        setNumber(parseInt(e.target.value));
+        const inputText = e.target.value;
+        setName(inputText);
     };
-    const deposit = () => {
-        dispatch({ type: ACTION_TYPES.deposit, payload: number });
-        setNumber(0);
+    const onSubmit = (e) => {
+        e.preventDefault();
+        dispatch({
+            type: ACTION_TYPES.add,
+            payload: { name },
+        });
+        setName("");
     };
-    const withdraw = () => {
-        dispatch({ type: ACTION_TYPES.withdraw, payload: number });
-        setNumber(0);
+
+    const remove = (targetId) => {
+        const id = parseInt(targetId);
+        dispatch({
+            type: ACTION_TYPES.remove,
+            payload: { id },
+        });
+    };
+
+    const toggle = (targetId) => {
+        const id = parseInt(targetId);
+        dispatch({
+            type: ACTION_TYPES.cancel,
+            payload: { id },
+        });
     };
 
     return (
         <div>
-            <h1>별별은행</h1>
-            <h3>잔고 : {money}원</h3>
-            <input
-                type="number"
-                step={1000}
-                min={0}
-                value={number}
-                onChange={onChange}
-            />
-            <button onClick={deposit}>입금</button>
-            <button onClick={withdraw}>출금</button>
+            <h1>별별명단</h1>
+            <h4>총 인원 : {info.count}명</h4>
+            <form onSubmit={onSubmit}>
+                <input type="text" onChange={onChange} value={name} />
+                <button type="submit">등록</button>
+            </form>
+            <ul>
+                {info.userInfo.map((item) => (
+                    <li key={item.id}>
+                        <span
+                            onClick={() => toggle(item.id)}
+                            style={{
+                                textDecoration: item.isCancel
+                                    ? "line-through"
+                                    : "none",
+                                cursor: "pointer",
+                            }}
+                        >
+                            {item.name}
+                        </span>
+                        <button onClick={() => remove(item.id)}>삭제</button>
+                    </li>
+                ))}
+            </ul>
         </div>
     );
 }

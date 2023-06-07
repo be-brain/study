@@ -40,6 +40,7 @@ function App() {
             <input
                 type="number"
                 step={1000}
+                min={0}
                 value={number}
                 onChange={onChange}
             />

@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import Children from "./components/Children";
 
 function Parent() {
@@ -19,6 +19,10 @@ function Parent() {
     const name = useMemo(() => {
         return { first: "성", last: "이름" };
     }, []);
+    // 함수도 객체
+    const renderCheck = useCallback(() => {
+        console.log("렌더링확인!!");
+    }, []);
 
     return (
         <div>
@@ -26,7 +30,11 @@ function Parent() {
             <p>{parentAge}살입니다.</p>
             <button onClick={parentAgeHandler}>부모나이올리기</button>
             <button onClick={childrenAgeHandler}>자식나이올리기</button>
-            <Children name={name} childrenAge={childrenAge} />
+            <Children
+                name={name}
+                childrenAge={childrenAge}
+                renderCheck={renderCheck}
+            />
         </div>
     );
 }

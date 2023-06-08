@@ -7,7 +7,10 @@ const Children = ({ name, childrenAge }) => {
         <div>
             <h1>나는 자식</h1>
             <p>{childrenAge}살입니다.</p>
-            <p>이름 : {name}</p>
+            <p>
+                이름 : {name.first}
+                {name.last}
+            </p>
         </div>
     );
 };

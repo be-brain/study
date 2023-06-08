@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import Children from "./components/Children";
 
 function Parent() {
@@ -15,7 +15,10 @@ function Parent() {
         setChildrenAge(childrenAge + 1);
     };
 
-    const name = "별별";
+    // 객체는 변수에 값이 아닌 값이 담긴 주소참조값이 저장된다
+    const name = useMemo(() => {
+        return { first: "성", last: "이름" };
+    }, []);
 
     return (
         <div>

@@ -1,20 +1,23 @@
-import React, { memo } from "react";
+import { forwardRef } from "react";
 
-const Children = ({ name, childrenAge, renderCheck }) => {
-    console.log("자식컴포넌트가 렌더링되었습니다");
+// 첫번째방법
+// const Children = forwardRef((_, ref) => {
+//     return (
+//         <>
+//             <input ref={ref} />
+//         </>
+//     );
+// });
 
+// export default Children;
+
+// 두번째방법
+const Children = (props, ref) => {
     return (
-        <div>
-            <h1>나는 자식</h1>
-            <p>{childrenAge}살입니다.</p>
-            <p>
-                이름 : {name.first}
-                {name.last}
-            </p>
-            <button onClick={renderCheck}>렌더링확인</button>
-        </div>
+        <>
+            <input ref={ref} />
+        </>
     );
 };
 
-// export default memo(Children);
-export default React.memo(Children);
+export default forwardRef(Children);

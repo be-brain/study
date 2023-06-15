@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+    <body>
+        <article></article>
+        <input
+            type="button"
+            value="fetch"
+            onclick="fetch('html').then(function(response){
+            // 서버에게 html이라는 파일을 요청
+            // 서버가 응답해 준 데이터가 text에 저장된다
+            response.text().then(function(text){document.querySelector('article').innerHTML = text})})"
+        />
+    </body>
+</html>

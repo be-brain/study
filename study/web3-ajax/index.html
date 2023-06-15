@@ -18,13 +18,16 @@
         />
         <ol>
             <li>
-                <a onclick="fetchPage('html')">HTML</a>
+                <!-- # : hash ! : bang -->
+                <a href="#!html" onclick="fetchPage('html')">HTML</a>
             </li>
             <li>
-                <a onclick="fetchPage('css')">CSS</a>
+                <a href="#!css" onclick="fetchPage('css')">CSS</a>
             </li>
             <li>
-                <a onclick="fetchPage('javascript')">JavaScript</a>
+                <a href="#!javascript" onclick="fetchPage('javascript')"
+                    >JavaScript</a
+                >
             </li>
         </ol>
         <article></article>
@@ -36,6 +39,13 @@
                     });
                 });
             };
+            if (location.hash) {
+                fetchPage(location.hash.substr(2));
+            } else {
+                fetchPage("welcome");
+            }
+            // 다른 페이지로 이동했다가 돌아와도 초기화면이 아닌 해당 해쉬태그의 페이지가 뜬다
+            // 요즘은 이렇게 안씀(seo X)
         </script>
     </body>
 </html>

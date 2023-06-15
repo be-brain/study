@@ -16,20 +16,7 @@
     nightDayHandler(this);
   "
         />
-        <ol>
-            <li>
-                <!-- # : hash ! : bang -->
-                <a href="#!html" onclick="fetchPage('html')">HTML</a>
-            </li>
-            <li>
-                <a href="#!css" onclick="fetchPage('css')">CSS</a>
-            </li>
-            <li>
-                <a href="#!javascript" onclick="fetchPage('javascript')"
-                    >JavaScript</a
-                >
-            </li>
-        </ol>
+        <ol id="nav"></ol>
         <article></article>
         <script>
             const fetchPage = (page) => {
@@ -46,6 +33,17 @@
             }
             // 다른 페이지로 이동했다가 돌아와도 초기화면이 아닌 해당 해쉬태그의 페이지가 뜬다
             // 요즘은 이렇게 안씀(seo X)
+
+            fetch("list").then(function (response) {
+                response.text().then(function (text) {
+                    text.split(",").map((ele) => {
+                        const temp = document.createElement("li");
+                        temp.innerHTML = `<a href="#!${ele}" onclick="fetchPage('${ele.trim()}')">${ele}</a>`;
+                        document.getElementById("nav").append(temp);
+                        console.log(temp);
+                    });
+                });
+            });
         </script>
     </body>
 </html>

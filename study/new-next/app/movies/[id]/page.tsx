@@ -1,40 +1,29 @@
-// export default function Detail({ params }: { params: { id: string } }) {
-//     console.log(params);
-//     return (
-//         <>
-//             <h1>Detail</h1>
-//             <h3>movie Id : {params.id}</h3>
-//         </>
-//     );
-// }
+"use client";
 
 import Image from "next/image";
+import { useSearchParams } from "next/navigation";
 
-async function fetchData(params: { id: string }) {
-    const res = await fetch(`http://localhost:3000/api/movies/${params.id}`, {
-        cache: "no-store",
-    });
-    const data = await res.json();
-    return data;
-}
+export default function Detail(params: any) {
+    const searchParams = useSearchParams();
+    const searchTitle = searchParams.get("title");
+    const searchPoster = searchParams.get("poster");
 
-export default async function Page({
-    params,
-}: {
-    params?: any;
-    children?: React.ReactNode;
-}) {
-    const data = await fetchData(params);
+    console.log(params);
 
     return (
-        <div className="space-y-4">
-            <h1 className="text-2xl font-medium">{data.original_title}</h1>
+        <>
+            <h1>Detail</h1>
+            <h3>movie Id : {params.id}</h3>
+            <p>Title : {searchTitle}</p>
             <Image
-                src={`https://image.tmdb.org/t/p/original/${data.poster_path}`}
-                width={500}
-                height={500}
+                src={`https://image.tmdb.org/t/p/original/${searchPoster}`}
+                width={300}
+                height={450}
                 alt="poster"
+                style={{
+                    display: "inline",
+                }}
             />
-        </div>
+        </>
     );
 }

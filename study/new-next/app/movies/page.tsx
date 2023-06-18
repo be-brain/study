@@ -22,13 +22,15 @@ export default async function Page() {
             {data?.map((movie: any) => (
                 <div key={movie.id}>
                     <Link
-                        href={`/movies/${movie.id}`}
-                        // href={{
-                        //     pathname: `/movies/${movie.id}`,
-                        //     query: {
-                        //         title: movie.original_title,
-                        //     },
-                        // }}
+                        // href={`/movies/${movie.id}`}
+                        href={{
+                            pathname: `/movies/${movie.id}`,
+                            query: {
+                                id: movie.id,
+                                title: movie.original_title,
+                                poster: movie.poster_path,
+                            },
+                        }}
                         // as={`/movies/${movie.original_title}`}
                     >
                         <Image

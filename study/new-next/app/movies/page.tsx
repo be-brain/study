@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 async function getData() {
     const res = await fetch("http://localhost:3000/api/movies", {
@@ -20,13 +21,33 @@ export default async function Page() {
             <h1>Home</h1>
             {data?.map((movie: any) => (
                 <div key={movie.id}>
-                    <Image
-                        src={`https://image.tmdb.org/t/p/original/${movie.poster_path}`}
-                        width={100}
-                        height={150}
-                        alt="poster"
-                    />
-                    <h3>{movie.original_title}</h3>
+                    <Link
+                        href={`/movies/${movie.id}`}
+                        // href={{
+                        //     pathname: `/movies/${movie.id}`,
+                        //     query: {
+                        //         title: movie.original_title,
+                        //     },
+                        // }}
+                        // as={`/movies/${movie.original_title}`}
+                    >
+                        <Image
+                            src={`https://image.tmdb.org/t/p/original/${movie.poster_path}`}
+                            width={100}
+                            height={150}
+                            alt="poster"
+                            style={{
+                                display: "inline",
+                            }}
+                        />
+                        <h3
+                            style={{
+                                display: "inline",
+                            }}
+                        >
+                            {movie.original_title}
+                        </h3>
+                    </Link>
                 </div>
             ))}
         </main>

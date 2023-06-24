@@ -1,13 +1,14 @@
 import { useAtom } from "jotai";
 import React from "react";
-import { priceAtom } from "../pages/Home";
+import { colorAtom, themeAtom } from "../pages/Home";
 
 const Sister = () => {
-    const [price] = useAtom(priceAtom);
+    const [theme] = useAtom(themeAtom);
+    const [color] = useAtom(colorAtom);
     return (
         <div>
-            <h1>Sister</h1>
-            <h3>{price}</h3>
+            <h1 style={{ color: `${color}` }}>Sister</h1>
+            <h3>{theme}</h3>
         </div>
     );
 };

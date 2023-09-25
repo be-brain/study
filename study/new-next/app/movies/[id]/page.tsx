@@ -13,7 +13,6 @@ export default function Detail(params: any) {
     return (
         <>
             <h1>Detail</h1>
-            <h3>movie Id : {params.id}</h3>
             <p>Title : {searchTitle}</p>
             <Image
                 src={`https://image.tmdb.org/t/p/original/${searchPoster}`}

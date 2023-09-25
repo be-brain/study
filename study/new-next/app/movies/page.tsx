@@ -18,7 +18,7 @@ export default async function Page() {
 
     return (
         <main>
-            <h1>Home</h1>
+            <h1>Movies</h1>
             {data?.map((movie: any) => (
                 <div key={movie.id}>
                     <Link

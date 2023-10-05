@@ -1,3 +1,5 @@
+// 부분문자열 검색 - long에서 short가 몇번 등장하는지 찾기
+
 const naiveSearch = (long, short) => {
     let count = 0;
     for (let i = 0; i < long.length; i++) {
@@ -16,4 +18,4 @@ const naiveSearch = (long, short) => {
     return count;
 };
 
-console.log(naiveSearch("leorie rolled", "le"));
+console.log(naiveSearch("leoliel roled", "led"));

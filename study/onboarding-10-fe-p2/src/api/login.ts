@@ -85,7 +85,7 @@ export const login = async (args: LoginRequest): Promise<LoginResult> => {
     });
     const result = await response.json();
     if (response.ok) {
-        saveAccessTokenToLocalStorage(result);
+        saveAccessTokenToLocalStorage(result.access_token);
         return "success";
     }
 
@@ -101,7 +101,7 @@ export const getCurrentUserInfo = async (): Promise<UserInfo | null> => {
     const response = await fetch(`${BASE_URL}/profile`, {
         method: "GET",
         headers: {
-            Authorization: `Bearer ${getAccessTokenFromLocalStorage}`,
+            Authorization: `Bearer ${getAccessTokenFromLocalStorage()}`,
         },
     });
     const result = await response.json();

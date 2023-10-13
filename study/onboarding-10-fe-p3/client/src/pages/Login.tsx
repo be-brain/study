@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useCallback, useEffect } from "react";
 import { getCurrentUserInfo, login } from "../api/login";
 import { useRouter } from "../hooks/useRouter";
 
 // TODO 3-2.: 이미 로그인된 유저인지 판별
 const isLoggedIn = async (): Promise<boolean> => {
-    return false;
+    const userInfo = await getCurrentUserInfo();
+    return userInfo !== null;
 };
 
 const Login = () => {
@@ -27,6 +28,14 @@ const Login = () => {
             : alert("아이디 또는 비밀번호를 다시 확인해주세요");
     };
     // TODO 3-2.: 이미 로그인된 상태라면 page-a로 라우팅
+    const currentStatus = useCallback(async () => {
+        const isAlreadyLogin = await isLoggedIn();
+        if (isAlreadyLogin) return routeTo("/page-a");
+    }, [routeTo]);
+
+    useEffect(() => {
+        currentStatus();
+    }, [currentStatus]);
 
     return (
         <div className="non-logged-in-body">

@@ -75,4 +75,13 @@ export const routers: RemixRouter = createBrowserRouter(
 
 // TODO 3-2: 라우터 객체에서 인증이 필요한 페이지만 필터링해 사이드바에 전달
 // id, path, label을 전달하여 Sidebar에서 사용
-export const SidebarContent: SidebarElement[] = [];
+export const SidebarContent: SidebarElement[] = routerData.filter(
+    (router: RouterElement) => router.withAuth
+);
+// export const SidebarContent: SidebarElement[] = routerData.reduce(
+//     (prev: SidebarElement[], cur: RouterElement) => {
+//         if (!cur.withAuth) return prev;
+//         return [...prev, { id: cur.id, path: cur.path, label: cur.label }];
+//     },
+//     []
+// );

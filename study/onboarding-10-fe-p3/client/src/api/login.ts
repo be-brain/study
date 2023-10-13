@@ -47,6 +47,13 @@ export const getCurrentUserInfo = async (): Promise<User | null> => {
     // 호출 성공시 유저 정보 반환
     // fetchClient를 사용하여 API 호출하거나, 직접 headers 작성
     // header가 올바르게 추가된 경우 쿠키는 자동으로 함께 전송됨
-
-    return null;
+    try {
+        const response = await fetchClient(`${BASE_URL}/profile`, {
+            method: "GET",
+        });
+        return response.ok ? response.json() : null;
+    } catch (error) {
+        console.error(error);
+        return null;
+    }
 };

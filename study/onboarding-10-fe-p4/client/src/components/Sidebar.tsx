@@ -9,23 +9,22 @@ import { UserAtom } from "../atoms/user";
 interface SidebarProps {
     sidebarContent: SidebarElement[];
     // TODO 4-2: Recoil atom `UserAtom`을 이용해 userProfile 값 대체 및 props type 삭제
-    userProfile: User | null;
 }
 
 // TODO 4-2: Recoil atom `UserAtom`을 이용해 userProfile 값 대체 및 props 삭제
-const Sidebar: React.FC<SidebarProps> = ({ sidebarContent, userProfile }) => {
+const Sidebar: React.FC<SidebarProps> = ({ sidebarContent }) => {
     // console.log(sidebarContent);
     // (4) [{…}, {…}, {…}, {…}]
     // 0: {id: 2, path: '/page-a', label: '페이지 A', isAdminOnly: false}
     // 1: {id: 3, path: '/page-b', label: '페이지 B', isAdminOnly: false}
     // 2: {id: 4, path: '/page-c', label: '페이지 C', isAdminOnly: false}
     // 3: {id: 5, path: '/admin', label: 'Admin', isAdminOnly: true}
-
     // console.log(userProfile);
     // {userId: 0, username: 'blue', userInfo: {name: "blueStragglr", roles: ['user', 'admin']}}
 
     // TODO 4-2: Recoil atom `UserAtom`을 이용해 userProfile 값 집어넣기
     // hint: useRecoilValue
+    const userProfile = useRecoilValue(UserAtom);
     const { currentPath, routeTo } = useRouter();
 
     const sidebarMenuClickHandler = (path: string) => {

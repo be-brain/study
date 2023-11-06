@@ -1,0 +1,15 @@
+{
+    // = ts가 src의 모든 파일을 확인한다
+    "include": ["src"],
+    "compilerOptions": {
+        // outDir : js파일이 생성될 디렉토리를 지정한다
+        // build라는 폴더에 만들어진 코드를 넣겠다
+        "outDir": "build",
+        // target : 어떤 버전의 js로 컴파일할지 지정한다
+        "target": "ES6",
+        // lib : 합쳐진(bundled) 라이브러리의 정의 파일을 특정해준다(타겟 런타임환경이 무엇인지 알려줌)
+        // "DOM" = 코드를 브라우저에서 실행하겠다
+        "lib": ["ES6", "DOM"],
+        "strict": true
+    }
+}

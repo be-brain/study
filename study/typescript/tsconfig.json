@@ -12,7 +12,7 @@
         "lib": ["ES6", "DOM"],
         "strict": true,
         // allowJs : ts안에 js를 허용하겠다
-        "allowJs": true,
+        // "allowJs": true,
         "esModuleInterop": true,
         "module": "CommonJS"
     }

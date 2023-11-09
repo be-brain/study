@@ -1,16 +1,24 @@
-// tsconfig.json에서 "allowJs": true로 설정함으로써 js파일을 불러올 수 있다
-import { init, exit } from "./myPackage.js";
+// import * as crypto from "crypto"; // * : everything
+import crypto from "crypto"; // tsconfig → esModuleInterop : true로 설정
 
-const hello = () => "Hello!";
-
-class Block {
-    constructor(private data: string) {}
-    static hello() {
-        return "HELLO";
+interface BlockShape {
+    hash: string;
+    prevHash: string;
+    height: number; //블록위치표시
+    data: string;
+}
+class Block implements BlockShape {
+    public hash: string;
+    constructor(
+        public prevHash: string,
+        public height: number,
+        public data: string
+    ) {
+        this.hash = Block.calculateHash(prevHash, height, data);
+        // static : class안에서 사용하는 함수로 클래스 인스턴스가 없어도 부를 수 있다
+    }
+    static calculateHash(prevHash: string, height: number, data: string) {
+        const toHash = `${prevHash} ${height} ${data}`;
     }
 }
-
-localStorage.setItem("name", "Bella");
-
-init({ debug: true, url: "http://www.google.com" });
-exit(1);
+localStorage.setItem("a", "b");

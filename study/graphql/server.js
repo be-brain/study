@@ -7,22 +7,27 @@ import { ApolloServer, gql } from "apollo-server";
 // Error: Apollo Server requires either an existing schema, modules or typeDefs
 // 사용자가 request할 모든 data들은 type Query안에 있어야 한다
 // Query = REST api의 GET request
+// allPosts = field
+// Mutation = REST api의 POST, PUT, DELETE request
 const typeDefs = gql`
     type User {
         id: ID
         username: String
     }
     type Post {
-        id: ID
-        text: String
-        author: User
+        id: ID!
+        text: String!
+        author: User!
     }
     type Query {
-        allPosts: [Post]
-        post(id: ID): Post
+        allPosts: [Post!]!
+        post(id: ID!): Post!
+    }
+    type Mutation {
+        createPost(text: String!, userId: ID!): Post!
+        deletePost(id: ID!): Boolean!
     }
 `;
-// allPosts = field
 
 const server = new ApolloServer({ typeDefs });
 server.listen().then(({ url }) => {

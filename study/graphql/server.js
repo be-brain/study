@@ -10,6 +10,7 @@ const typeDefs = gql`
     type User {
         id: ID
         username: String
+        intro: String
     }
     type Post {
         id: ID!
@@ -19,6 +20,7 @@ const typeDefs = gql`
     # Query = REST api의 GET request
     # Mutation = REST api의 POST, PUT, DELETE request
     type Query {
+        allUsers: [User!]!
         allPosts: [Post!]!
         post(id: ID!): Post
         ping: String
@@ -47,10 +49,19 @@ let posts = [
         text: "third",
     },
 ];
+let users = [
+    { id: "1", username: "Bella" },
+    { id: "2", username: "Json" },
+    { id: "3", username: "Ele" },
+];
 
 // Server가 resolvers 함수를 부를때는 항상 arguments(① root, ② args: query/mutation에서 유저가 보낸 매개변수)를 전달한다
 const resolvers = {
     Query: {
+        allUsers() {
+            console.log("allUsers called");
+            return users;
+        },
         allPosts() {
             return posts;
         },
@@ -78,6 +89,13 @@ const resolvers = {
             // if (!post) return false;
             // posts = posts.filter((post) => post.id !== id);
             // return true;
+        },
+    },
+    User: {
+        intro(root) {
+            console.log("User called");
+            console.log(root);
+            return "Hello!";
         },
     },
 };

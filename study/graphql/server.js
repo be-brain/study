@@ -28,12 +28,12 @@ const typeDefs = gql`
     # post(id: ID): Post = nullable field
     # post(id: ID!): Post! = id(argument) 필수이며 항상 Post를 return해야한다
     type Mutation {
-        createPost(text: String!, userId: ID!): Post!
+        createPost(userId: ID!, text: String!): Post!
         deletePost(id: ID!): Boolean!
     }
 `;
 
-const posts = [
+let posts = [
     {
         id: "1",
         text: "first",
@@ -54,12 +54,30 @@ const resolvers = {
         allPosts() {
             return posts;
         },
-        post(root, args) {
-            console.log(root, args);
-            return null;
+        post(_, { id }) {
+            return posts.find((item) => item.id === id);
         },
         ping() {
             return "pong";
+        },
+    },
+    Mutation: {
+        createPost(_, { userId, text }) {
+            const newPost = { id: posts.length + 1, text };
+            posts.push(newPost);
+            return newPost;
+        },
+        deletePost(_, { id }) {
+            const post = posts.find((item) => item.id === id);
+            if (post) {
+                posts = posts.filter((item) => item.id !== id);
+                return true;
+            }
+            return false;
+            // const post = posts.find((post) => post.id === id);
+            // if (!post) return false;
+            // posts = posts.filter((post) => post.id !== id);
+            // return true;
         },
     },
 };

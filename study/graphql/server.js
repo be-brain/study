@@ -9,13 +9,15 @@ import { ApolloServer, gql } from "apollo-server";
 const typeDefs = gql`
     type User {
         id: ID
-        username: String
         intro: String
+        firstName: String
+        lastName: String
+        fullName: String
     }
     type Post {
         id: ID!
         text: String!
-        author: User
+        author(id: ID): User
     }
     # Query = REST api의 GET request
     # Mutation = REST api의 POST, PUT, DELETE request
@@ -39,20 +41,23 @@ let posts = [
     {
         id: "1",
         text: "first",
+        userId: "20",
     },
     {
         id: "2",
         text: "second",
+        userId: "30",
     },
     {
         id: "3",
         text: "third",
+        userId: "30",
     },
 ];
 let users = [
-    { id: "1", username: "Bella" },
-    { id: "2", username: "Json" },
-    { id: "3", username: "Ele" },
+    { id: "10", firstName: "Bella", lastName: "Howard" },
+    { id: "20", firstName: "Json", lastName: "Wood" },
+    { id: "30", firstName: "Ele", lastName: "Page" },
 ];
 
 // Server가 resolvers 함수를 부를때는 항상 arguments(① root, ② args: query/mutation에서 유저가 보낸 매개변수)를 전달한다
@@ -74,7 +79,9 @@ const resolvers = {
     },
     Mutation: {
         createPost(_, { userId, text }) {
-            const newPost = { id: posts.length + 1, text };
+            const isUser = users.find((user) => user.id === userId);
+            if (!isUser) return "No permission";
+            const newPost = { id: posts.length + 1, userId, text };
             posts.push(newPost);
             return newPost;
         },
@@ -96,6 +103,16 @@ const resolvers = {
             console.log("User called");
             console.log(root);
             return "Hello!";
+        },
+        fullName({ firstName, lastName }) {
+            return `${firstName} ${lastName}`;
+        },
+    },
+    Post: {
+        author({ userId }, { id }) {
+            const isUser = users.find((user) => user.id === id);
+            if (!isUser) console.log("Not User");
+            return users.find((user) => user.id === userId);
         },
     },
 };

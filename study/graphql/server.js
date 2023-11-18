@@ -12,8 +12,14 @@ const typeDefs = gql`
         intro: String
         firstName: String
         lastName: String
+        """
+        The combination of firstName and lastName.
+        """
         fullName: String
     }
+    """
+    Post object represents a resource for a post. It consists of three properties(id, text, author).
+    """
     type Post {
         id: ID!
         text: String!
@@ -32,6 +38,9 @@ const typeDefs = gql`
     # post(id: ID): Post = nullable field
     # post(id: ID!): Post! = id(argument) 필수이며 항상 Post를 return해야한다
     type Mutation {
+        """
+        It takes two parameters: userId and text
+        """
         createPost(userId: ID!, text: String!): Post!
         deletePost(id: ID!): Boolean!
     }

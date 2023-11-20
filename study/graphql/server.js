@@ -1,5 +1,6 @@
 // package.json에서 type을 module로 설정하는 경우 ↓
 import { ApolloServer, gql } from "apollo-server";
+import { API_KEY } from "./config/apikey.js";
 // package.json에서 type을 module로 설정하지 않는 경우 ↓
 // const { ApolloServer, gql } = require("apollo-server");
 
@@ -25,11 +26,29 @@ const typeDefs = gql`
         text: String!
         author(id: ID): User
     }
+    type MovieDetails {
+        adult: Boolean
+        backdrop_path: String
+        genre_ids: [Int]
+        id: ID
+        original_language: String
+        original_title: String
+        overview: String
+        popularity: Float
+        poster_path: String
+        release_date: String
+        title: String
+        video: Boolean
+        vote_average: Float
+        vote_count: Int
+    }
     # Query = REST api의 GET request
     # Mutation = REST api의 POST, PUT, DELETE request
     type Query {
+        allMovies: [MovieDetails!]!
         allUsers: [User!]!
         allPosts: [Post!]!
+        movie(id: ID!): MovieDetails
         post(id: ID!): Post
         ping: String
     }
@@ -72,12 +91,24 @@ let users = [
 // Server가 resolvers 함수를 부를때는 항상 arguments(① root, ② args: query/mutation에서 유저가 보낸 매개변수)를 전달한다
 const resolvers = {
     Query: {
+        allMovies() {
+            return fetch(
+                `https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}`
+            )
+                .then((res) => res.json())
+                .then((data) => data.results);
+        },
         allUsers() {
             console.log("allUsers called");
             return users;
         },
         allPosts() {
             return posts;
+        },
+        movie(_, { id }) {
+            return fetch(
+                `https://api.themoviedb.org/3/movie/${id}?api_key=${API_KEY}`
+            ).then((res) => res.json());
         },
         post(_, { id }) {
             return posts.find((item) => item.id === id);

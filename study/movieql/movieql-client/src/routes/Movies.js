@@ -1,8 +1,9 @@
 import React from "react";
 import gql from "graphql-tag";
 import { useQuery } from "@apollo/client";
+import { Link } from "react-router-dom";
 
-const getAllMovies = gql`
+const GET_ALL_MOVIES = gql`
     {
         allMovies {
             id
@@ -35,7 +36,7 @@ const Movies = () => {
     // }, [client]);
 
     /* Declarative(선언형) code */
-    const { loading, data, error } = useQuery(getAllMovies);
+    const { loading, data, error } = useQuery(GET_ALL_MOVIES);
 
     return (
         <>
@@ -43,7 +44,11 @@ const Movies = () => {
             {error && <h1>Something Wrong!</h1>}
             <h3>Movie list</h3>
             {data?.allMovies.map((movie) => {
-                return <li key={movie.id}>{movie.title}</li>;
+                return (
+                    <li key={movie.id}>
+                        <Link to={`/movies/${movie.id}`}>{movie.title}</Link>
+                    </li>
+                );
             })}
             <h3>User list</h3>
             {data?.allUsers.map((user) => {

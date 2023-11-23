@@ -4,7 +4,7 @@ import { useQuery } from "@apollo/client";
 import { Link } from "react-router-dom";
 
 const GET_ALL_MOVIES = gql`
-    {
+    query getAllMovies {
         allMovies {
             id
             title

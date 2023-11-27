@@ -11,6 +11,7 @@ const GET_MOVIE = gql`
             overview
             poster_path
             vote_average
+            isLiked @client
         }
     }
 `;
@@ -30,6 +31,7 @@ const Movie = () => {
             <Column>
                 <Title>{loading ? "Loading..." : `${data.movie?.title}`}</Title>
                 <Subtitle>⭐️ {data?.movie?.vote_average}</Subtitle>
+                <button>{data?.movie?.isLiked ? "Unlike" : "👍"}</button>
                 <Description>{data?.movie?.overview}</Description>
             </Column>
             <Image

@@ -18,11 +18,32 @@ const GET_MOVIE = gql`
 
 const Movie = () => {
     const { id } = useParams();
-    const { data, error, loading } = useQuery(GET_MOVIE, {
+    const {
+        data,
+        error,
+        loading,
+        client: { cache },
+    } = useQuery(GET_MOVIE, {
         variables: {
             movieId: id,
         },
     });
+    const onClickToggle = () => {
+        // Fragment : Type의 일부
+        cache.writeFragment({
+            id: `MovieDetails:${id}`,
+            fragment: gql`
+                fragment MovieFragment on MovieDetails {
+                    title
+                    isLiked
+                }
+            `,
+            data: {
+                title: "오늘의 영화",
+                isLiked: !data.movie.isLiked,
+            },
+        });
+    };
     if (error) return <h1>Something Wrong!</h1>;
     if (loading) return <h1>Loading...</h1>;
 
@@ -31,7 +52,9 @@ const Movie = () => {
             <Column>
                 <Title>{loading ? "Loading..." : `${data.movie?.title}`}</Title>
                 <Subtitle>⭐️ {data?.movie?.vote_average}</Subtitle>
-                <button>{data?.movie?.isLiked ? "Unlike" : "👍"}</button>
+                <button onClick={onClickToggle}>
+                    {data?.movie?.isLiked ? "Unlike" : "👍"}
+                </button>
                 <Description>{data?.movie?.overview}</Description>
             </Column>
             <Image

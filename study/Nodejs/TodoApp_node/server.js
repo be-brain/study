@@ -44,6 +44,7 @@ app.get("/goal", function (req, res) {
 app.get("/done", function (req, res) {
     res.sendFile(__dirname + "/done.html");
 });
-app.get("/start", function (req, res) {
-    res.send("시작화면입니다");
+app.get("/post", async (req, res) => {
+    const result = await db.collection("post").find().toArray();
+    res.send(result);
 });
